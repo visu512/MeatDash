@@ -24,10 +24,10 @@
             android:id="@+id/shopName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="3dp"
             android:text="Shop Name"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -35,6 +35,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Short description of the shop"
+            android:ellipsize="end"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
+
+
+        <TextView
+            android:id="@+id/shopsDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Short description of the shop"
+            android:ellipsize="end"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
 
@@ -43,7 +54,7 @@
             android:id="@+id/shopRatingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="0dp"
             android:text="Rating: 4.5"
             android:textColor="@color/black"
             android:textSize="14sp" />

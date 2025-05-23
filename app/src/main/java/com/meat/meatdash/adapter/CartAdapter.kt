@@ -16,7 +16,8 @@ import com.meat.meatdash.model.FoodItem
 
 class CartAdapter(
     private var cartItems: MutableList<FoodItem>,
-    private val onQuantityChanged: () -> Unit
+    private val onQuantityChanged: () -> Unit,
+    private val onItemRemoved: () -> Unit
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     inner class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,7 +41,7 @@ class CartAdapter(
         val item = cartItems[position]
         val pricePerKg = item.price
 
-        // Image
+        // Load image
         if (!item.imageBase64.isNullOrEmpty()) {
             try {
                 val imageBytes = Base64.decode(item.imageBase64, Base64.DEFAULT)
@@ -55,7 +56,7 @@ class CartAdapter(
 
         holder.itemName.text = item.name
 
-        // Spinner
+        // Setup spinner
         val unitAdapter = ArrayAdapter.createFromResource(
             holder.itemView.context,
             R.array.weight_units,
@@ -65,7 +66,7 @@ class CartAdapter(
         }
         holder.weightUnitSpinner.adapter = unitAdapter
 
-        // Initial weight & unit
+        // Set initial weight and unit
         if (item.weight >= 1000) {
             holder.itemWeight.setText((item.weight / 1000).toString())
             holder.weightUnitSpinner.setSelection(1) // kg
@@ -76,7 +77,7 @@ class CartAdapter(
 
         updatePrice(holder, pricePerKg)
 
-        // Weight change
+        // Weight change listener
         holder.itemWeight.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 updateWeightAndPrice(holder, item, pricePerKg)
@@ -85,22 +86,25 @@ class CartAdapter(
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Spinner selection
+        // Spinner selection listener
         holder.weightUnitSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 updateWeightAndPrice(holder, item, pricePerKg)
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         // Remove item
         holder.btnRemove.setOnClickListener {
-            CartManager.removeItem(item)
-            cartItems.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, cartItems.size)
-            onQuantityChanged()
+            CartManager.removeItem(item) { success ->
+                if (success) {
+                    cartItems.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, cartItems.size)
+                    onQuantityChanged()
+                    onItemRemoved()
+                }
+            }
         }
     }
 
@@ -110,10 +114,13 @@ class CartAdapter(
         val unit = holder.weightUnitSpinner.selectedItem.toString()
         val weightInGrams = if (unit == "kg") (weight * 1000).toInt() else weight.toInt()
 
-        item.weight = weightInGrams
-        CartManager.updateItemWeight(item, weightInGrams)
-        updatePrice(holder, pricePerKg)
-        onQuantityChanged()
+        CartManager.updateItemWeight(item, weightInGrams) { success ->
+            if (success) {
+                item.weight = weightInGrams
+                updatePrice(holder, pricePerKg)
+                onQuantityChanged()
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -124,7 +131,7 @@ class CartAdapter(
         val weightInKg = if (unit == "kg") weight else weight / 1000.0
 
         val totalPrice = pricePerKg * weightInKg
-        holder.itemPrice.text = "₹%.2f (₹%d/kg)".format(totalPrice, pricePerKg)
+        holder.itemPrice.text = "₹%.2f (₹%d)".format(totalPrice, pricePerKg)
     }
 
     fun updateItems(newItems: List<FoodItem>) {

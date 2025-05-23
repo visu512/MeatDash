@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorError"
-    tools:context=".SplashActivity">
+    tools:context=".user.SplashActivity">
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -24,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="MEATDASH"
+        android:text="MeatDash"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24sp"

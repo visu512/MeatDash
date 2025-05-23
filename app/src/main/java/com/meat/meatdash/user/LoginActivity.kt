@@ -1,4 +1,4 @@
-package com.meat.meatdash
+package com.meat.meatdash.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.meat.meatdash.activity.MainActivity
 import com.meat.meatdash.databinding.ActivityLoginBinding
 import com.vdx.designertoast.DesignerToast
 

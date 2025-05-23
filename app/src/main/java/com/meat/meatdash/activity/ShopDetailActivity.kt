@@ -1,4 +1,4 @@
-package com.meat.meatdash
+package com.meat.meatdash.activity
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
+import com.meat.meatdash.R
+import com.meat.meatdash.activity.CartActivity
 import com.meat.meatdash.adapter.PopularFoodAdapter
 import com.meat.meatdash.databinding.ActivityShopDetailBinding
 import com.meat.meatdash.model.CartManager
@@ -24,15 +26,18 @@ class ShopDetailActivity : AppCompatActivity() {
         binding = ActivityShopDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val shopId = intent.getStringExtra("shop_id") ?: run {
+        val shopId = intent.getStringExtra("shopRegId") ?: run {
             Toast.makeText(this, "Invalid shop", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
 
         binding.backButton.setOnClickListener { onBackPressed() }
-        binding.callButton.setOnClickListener { handleCallButton() }
-        binding.directionButton.setOnClickListener { handleDirectionsButton() }
+
+//        binding..setOnClickListener {
+//            startActivity(Intent(this, CartActivity::class.java))
+//        }
+//        binding.directionButton.setOnClickListener { handleDirectionsButton() }
 
         setupRecyclerView()
         loadShopDetails(shopId)
@@ -43,19 +48,18 @@ class ShopDetailActivity : AppCompatActivity() {
     }
 
     private fun loadShopDetails(shopId: String) {
-        db.collection("ShopDetails").document(shopId)
+        db.collection("Shops").document(shopId)
             .get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
-                    binding.shopName.text = document.getString("shopName")
-//                    binding.shopDescription.text = document.getString("shopDescription")
+                    binding.shopName.text = document.getString("shopName") ?: ""
+                    binding.shopDescription.text = document.getString("shopDescription") ?: ""
                     binding.shopRating.text = "%.1f".format(document.getDouble("rating") ?: 0.0)
                     binding.shopReviewCount.text =
-                        "(${document.getLong("reviewCount") ?: 0} reviews)"
-                    binding.shopLocation.text = document.getString("shopLocation")
+                        "(${document.getLong("reviewCount")?.toInt() ?: 0} reviews)"
+                    binding.shopLocation.text = document.getString("shopLocation") ?: ""
 
                     document.getString("imageBase64")?.let { loadShopImage(it) }
-
                     loadProducts(shopId)
                 } else {
                     Toast.makeText(this, "Shop not found", Toast.LENGTH_SHORT).show()
@@ -80,42 +84,45 @@ class ShopDetailActivity : AppCompatActivity() {
     }
 
     private fun loadProducts(shopId: String) {
-        db.collection("products")
+        db.collection("Shops")
+            .document(shopId)
+            .collection("products_name")
             .get()
             .addOnSuccessListener { result ->
                 val foodItems = result.map { doc ->
-                    val price = (doc.get("price") as? Number)?.toInt() ?: 0
-
                     FoodItem(
                         id = doc.id,
                         name = doc.getString("name") ?: "",
-                        price = price,
+                        price = (doc.get("price") as? Number)?.toInt() ?: 0,
                         description = doc.getString("description") ?: "",
                         imageBase64 = doc.getString("imageBase64") ?: "",
-                        shopId = doc.getString("shopId") ?: ""
+                        shopId = shopId,
+                        shopName = binding.shopName.text.toString()
                     )
-
                 }
 
                 val adapter = PopularFoodAdapter(foodItems) { foodItem ->
                     CartManager.addItem(foodItem)
-                    val intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
+                    Toast.makeText(
+                        this,
+                        "${foodItem.name} added to cart",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 binding.popularItemsRecyclerView.adapter = adapter
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error loading products: ${e.message}", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    this,
+                    "Error loading products: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-    }
-
-    private fun handleCallButton() {
-        // Implement call functionality
     }
 
     private fun handleDirectionsButton() {
         // Implement directions functionality
+        Toast.makeText(this, "Directions feature coming soon", Toast.LENGTH_SHORT).show()
     }
 }

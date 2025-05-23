@@ -19,16 +19,17 @@ class ShopAdapter(
     inner class ShopViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val shopImage: ImageView = itemView.findViewById(R.id.shopImage)
         private val shopName: TextView = itemView.findViewById(R.id.shopName)
-        private val Location: TextView = itemView.findViewById(R.id.shopLocations)
+        private val shopLocation: TextView = itemView.findViewById(R.id.shopLocations)
         private val shopRatingText: TextView = itemView.findViewById(R.id.shopRatingText)
+        private val shopDescription: TextView = itemView.findViewById(R.id.shopsDescription)
 
         @SuppressLint("SetTextI18n")
         fun bind(shop: Shop) {
             shopName.text = shop.shopName
-            Location.text = shop.shopLocation
+            shopLocation.text = shop.shopLocation
             shopRatingText.text = "Rating: ${shop.rating} ⭐ (${shop.reviewCount})"
+            shopDescription.text = shop.shopDescription
 
-            // Load image safely
             try {
                 if (shop.imageBase64.isNotEmpty()) {
                     Glide.with(itemView.context)
@@ -40,10 +41,13 @@ class ShopAdapter(
                     shopImage.setImageResource(R.drawable.placeholder)
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 shopImage.setImageResource(R.drawable.placeholder)
             }
 
-            itemView.setOnClickListener { onClick(shop) } // click on each
+            itemView.setOnClickListener {
+                onClick(shop)
+            }
         }
     }
 
@@ -59,3 +63,5 @@ class ShopAdapter(
 
     override fun getItemCount(): Int = shopList.size
 }
+
+

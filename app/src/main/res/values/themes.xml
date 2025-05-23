@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MEATDASH" parent="Theme.Material3.DayNight.NoActionBar">
+<!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/colorError</item>
         <item name="colorSecondary">@color/colorError</item>

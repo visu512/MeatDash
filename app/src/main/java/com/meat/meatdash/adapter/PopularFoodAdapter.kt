@@ -7,25 +7,79 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
+import com.bumptech.glide.Glide
 import com.meat.meatdash.R
 import com.meat.meatdash.model.CartManager
 import com.meat.meatdash.model.FoodItem
-
 
 class PopularFoodAdapter(
     private val foodItems: List<FoodItem>,
     private val onItemClick: (FoodItem) -> Unit
 ) : RecyclerView.Adapter<PopularFoodAdapter.FoodViewHolder>() {
 
+    // Initialize with items already in cart
+    private val addedItems = CartManager.getCartItems().map { it.id }.toMutableSet()
+
     inner class FoodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val foodImage: ImageView = itemView.findViewById(R.id.foodImage)
-        val foodName: TextView = itemView.findViewById(R.id.foodName)
-        val foodDescription: TextView = itemView.findViewById(R.id.foodDescription)
-        val foodPrice: TextView = itemView.findViewById(R.id.foodPrice)
-        val btnAddToCart: MaterialButton = itemView.findViewById(R.id.AddToCartBtn)
+        private val foodImage: ImageView = itemView.findViewById(R.id.foodImage)
+        private val foodName: TextView = itemView.findViewById(R.id.foodName)
+        private val foodPrice: TextView = itemView.findViewById(R.id.foodPrice)
+        private val foodDescription: TextView = itemView.findViewById(R.id.foodDescription)
+        private val btnAddToCart: com.google.android.material.button.MaterialButton =
+            itemView.findViewById(R.id.AddToCartBtn)
+
+        fun bind(foodItem: FoodItem) {
+            foodName.text = foodItem.name
+            foodPrice.text = "₹${foodItem.price}"
+            foodDescription.text = foodItem.description
+
+            // Load image
+            try {
+                if (foodItem.imageBase64.isNotEmpty()) {
+                    val bytes = Base64.decode(foodItem.imageBase64, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    Glide.with(itemView.context)
+                        .load(bitmap)
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.placeholder)
+                        .into(foodImage)
+                } else {
+                    foodImage.setImageResource(R.drawable.placeholder)
+                }
+            } catch (e: Exception) {
+                foodImage.setImageResource(R.drawable.placeholder)
+            }
+
+            // Update button state
+            updateButtonState(foodItem)
+
+            btnAddToCart.setOnClickListener {
+                if (!addedItems.contains(foodItem.id)) {
+                    CartManager.addItem(foodItem) { success ->
+                        if (success) {
+                            addedItems.add(foodItem.id)
+                            updateButtonState(foodItem)
+                            onItemClick(foodItem)
+                        }
+                    }
+                }
+            }
+
+            itemView.setOnClickListener { onItemClick(foodItem) }
+        }
+
+        private fun updateButtonState(foodItem: FoodItem) {
+            if (addedItems.contains(foodItem.id)) {
+                btnAddToCart.text = "Added In Cart"
+                btnAddToCart.isEnabled = false
+                btnAddToCart.setBackgroundColor(itemView.context.getColor(R.color.gray))
+            } else {
+                btnAddToCart.text = "Add to Cart"
+                btnAddToCart.isEnabled = true
+                btnAddToCart.setBackgroundColor(itemView.context.getColor(R.color.black))
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
@@ -35,39 +89,14 @@ class PopularFoodAdapter(
     }
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
-        val foodItem = foodItems[position]
-
-        holder.foodName.text = foodItem.name
-        holder.foodDescription.text = foodItem.description
-        holder.foodPrice.text = "₹${foodItem.price}"
-
-        if (!foodItem.imageBase64.isNullOrEmpty()) {
-            try {
-                val imageBytes = Base64.decode(foodItem.imageBase64, Base64.DEFAULT)
-                val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-                holder.foodImage.setImageBitmap(bitmap)
-            } catch (e: Exception) {
-                holder.foodImage.setImageResource(R.drawable.placeholder)
-            }
-        } else {
-            holder.foodImage.setImageResource(R.drawable.placeholder)
-        }
-
-
-        // Handle Add to Cart button
-        holder.btnAddToCart.setOnClickListener {
-            CartManager.addItem(foodItem)
-//            Toast.makeText(holder.itemView.context,
-//                "${foodItem.name} added to cart",
-//                Toast.LENGTH_SHORT).show()
-            onItemClick(foodItem)
-        }
-
-
-//        holder.itemView.setOnClickListener {
-//            onItemClick(foodItem)
-//        }
+        holder.bind(foodItems[position])
     }
 
-    override fun getItemCount() = foodItems.size
+    override fun getItemCount(): Int = foodItems.size
+
+    fun refreshCartState() {
+        addedItems.clear()
+        addedItems.addAll(CartManager.getCartItems().map { it.id })
+        notifyDataSetChanged()
+    }
 }
