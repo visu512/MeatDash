@@ -1,11 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base splash theme with no action bar and fullscreen -->
+    <!-- 1. Splash screen theme -->
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!-- 2. Snackbar style -->
+    <style name="AppSnackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/snackbar_background</item>
+    </style>
+
+    <!-- 3. Rounded ImageView shapes -->
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="CircleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- 4. TextInputLayout (OutlinedBox) -->
+    <style name="WeightInputStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxBackgroundColor">@color/light_gray</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <!-- 5. Dialog window animations -->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+    <!-- 6. Collapsing toolbar title text -->
+    <style name="ExpandedAppBarTitle" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="CollapsedAppBarTitle" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- 7. Drawer menu item text -->
+    <style name="TextAppearance.DrawerMenuItem" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- 8. Window transition animations -->
+    <style name="WindowSlideUpDown">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_up</item>
+        <item name="android:activityOpenExitAnimation">@anim/hold</item>
+        <item name="android:activityCloseEnterAnimation">@anim/hold</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_down</item>
     </style>
 
 </resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_bottom_sheet"
+    android:padding="4dp"
+    android:gravity="center_vertical"
+    android:elevation="8dp">
+
+    <!-- Left aligned: Item count text -->
+    <TextView
+        android:id="@+id/tvItemCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/poppins"
+        android:text="2 Items added"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingLeft="6dp"
+        android:textColor="@color/black" />
+
+    <!-- Right aligned: View Cart button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnViewCart"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:backgroundTint="#27AE60"
+        android:text="View Cart"
+        android:textAllCaps="false"
+        android:paddingTop="8dp"
+        android:fontFamily="@font/poppins"
+        android:textColor="@android:color/white"
+        app:cornerRadius="12dp"
+        android:drawableRight="@drawable/baseline_chevron_right"
+        android:drawableTint="@color/white"
+        app:iconTint="@android:color/white" />
+</LinearLayout>

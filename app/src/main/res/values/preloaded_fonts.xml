@@ -3,5 +3,9 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/allerta</item>
         <item>@font/anuphan</item>
+        <item>@font/nunito</item>
+        <item>@font/nunito_light</item>
+        <item>@font/nunito_medium</item>
+        <item>@font/poppins</item>
     </array>
 </resources>

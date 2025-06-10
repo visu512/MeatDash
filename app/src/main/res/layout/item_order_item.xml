@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:paddingVertical="4dp"
+    android:gravity="center_vertical">
+
+    <!-- Thumbnail (if you want to show the image) -->
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/imageCard"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        app:cardCornerRadius="6dp"
+        app:strokeWidth="0.5dp">
+
+        <ImageView
+            android:id="@+id/imageOrderItem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+
+        <!-- Item name -->
+        <TextView
+            android:id="@+id/textItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chicken Breast"
+            android:textSize="13.5sp"
+            android:fontFamily="@font/poppins"
+            android:textAppearance="?attr/textAppearanceBody1" />
+
+        <!-- Quantity and price -->
+        <TextView
+            android:id="@+id/textItemQtyPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:textSize="11.5sp"
+            android:fontFamily="@font/poppins"
+            android:text="Weight: 500g       • ₹250.00"
+            android:textAppearance="?attr/textAppearanceCaption" />
+    </LinearLayout>
+
+</LinearLayout>

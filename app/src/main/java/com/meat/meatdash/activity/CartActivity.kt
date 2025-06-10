@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.meat.meatdash.CartManager
 import com.meat.meatdash.adapter.CartAdapter
 import com.meat.meatdash.checkout.CheckoutActivity
 import com.meat.meatdash.databinding.ActivityCartBinding
-import com.meat.meatdash.model.CartManager
 
 class CartActivity : AppCompatActivity() {
 
@@ -20,14 +20,15 @@ class CartActivity : AppCompatActivity() {
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        CartManager.init(this)
         loadCartItems()
     }
 
     private fun loadCartItems() {
         binding.progressBar.visibility = View.VISIBLE
-        CartManager.loadCartItems { success ->
+        CartManager.loadCartItems {
             binding.progressBar.visibility = View.GONE
-            if (success) {
+            if (it) {
                 setupRecyclerView()
                 updateTotalPrice()
                 setupButtonListeners()
@@ -71,14 +72,11 @@ class CartActivity : AppCompatActivity() {
     private fun setupButtonListeners() {
         binding.backButton.setOnClickListener { onBackPressed() }
 
+        // add details
         binding.btnCheckout.setOnClickListener {
             if (CartManager.getCartItems().isNotEmpty()) {
                 startActivity(Intent(this, CheckoutActivity::class.java))
             }
-        }
-
-        binding.btnContinueShopping.setOnClickListener {
-            finish()
         }
     }
 
@@ -87,3 +85,7 @@ class CartActivity : AppCompatActivity() {
         loadCartItems()
     }
 }
+
+
+
+

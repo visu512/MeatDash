@@ -1,64 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="8dp"
-    android:elevation="4dp"
-    android:radius="12dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:layout_marginTop="10dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="10dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginLeft="4dp"
+    app:cardElevation="1dp"
+    app:strokeColor="#fff"
+    app:strokeWidth="0.1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/shopImage"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img2" />
+        <!-- Image on left with proper rounded corners -->
+<!--        <FrameLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:padding="4dp"-->
+<!--            android:layout_gravity="center">-->
 
-        <TextView
-            android:id="@+id/shopName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="Shop Name"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:layout_width="160dp"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_margin="2dp"-->
+<!--                app:cardCornerRadius="12dp"-->
+<!--                app:cardElevation="0dp"-->
+<!--                app:cardPreventCornerOverlap="false"-->
+<!--                app:strokeColor="#E0E0E0"-->
+<!--                app:strokeWidth="0.5dp">-->
 
-        <TextView
-            android:id="@+id/shopLocations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Short description of the shop"
-            android:ellipsize="end"
-            android:textColor="@android:color/black"
-            android:textSize="13sp" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/foodImage"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    android:src="@drawable/placeholder"-->
+<!--                    android:contentDescription="Restaurant image" />-->
+
+<!--            </com.google.android.material.card.MaterialCardView>-->
+<!--        </FrameLayout>-->
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="160dp"
+            android:layout_height="210dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            android:layout_margin="2dp"
+            app:strokeColor="#E0E0E0"
+            android:forceDarkAllowed="false"
+            app:strokeWidth="0.5dp">
+
+            <ImageView
+                android:id="@+id/foodImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
+        </com.google.android.material.card.MaterialCardView>
 
 
-        <TextView
-            android:id="@+id/shopsDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Short description of the shop"
-            android:ellipsize="end"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12sp" />
 
-        <!-- Rating Text -->
-        <TextView
-            android:id="@+id/shopRatingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:text="Rating: 4.5"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+        <!-- Content on right -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:padding="12dp">
 
+            <!-- First row: Name and delivery time -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/shopName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins"
+                    android:maxLines="1"
+                    android:text="Hotel The Avenue"
+                    android:textColor="#1A1A1A"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <!-- Second row: Cuisine types -->
+            <TextView
+                android:id="@+id/shopsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:fontFamily="@font/poppins"
+                android:text="North Indian, Biryani, Chinese, South Indian, Mughlai"
+                android:textColor="#616161"
+                android:textSize="12sp" />
+
+            <!-- Third row: Location and distance -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/baseline_location"
+                    app:tint="#9E9E9E" />
+
+                <TextView
+                    android:id="@+id/shopLocations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="Adityapur • 1.6 km"
+                    android:textColor="#757575"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="#F5F5F5" />
+
+            <!-- Offers section -->
+            <TextView
+                android:id="@+id/offersText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:fontFamily="@font/poppins"
+                android:text="50% off up to ₹100 | Use code FOODIE"
+                android:textColor="#3FBA5A"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/deliveryTimeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:gravity="center"
+                android:minWidth="64dp"
+                android:paddingHorizontal="0dp"
+                android:paddingVertical="4dp"
+                android:text="40-45 mins"
+                android:fontFamily="@font/poppins"
+                android:textColor="#3FBA5A"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:id="@+id/shopRatingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="(939 reviews)"
+                android:textColor="#9E9E9E"
+                android:fontFamily="@font/poppins"
+                android:textSize="12sp" />
+
+        </LinearLayout>
     </LinearLayout>
+
 
 </com.google.android.material.card.MaterialCardView>

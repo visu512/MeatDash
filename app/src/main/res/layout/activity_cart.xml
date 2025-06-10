@@ -4,36 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:orientation="vertical"
-    android:padding="0dp">
+    android:padding="0dp"
+    tools:context=".activity.CartActivity">
 
     <!-- Fixed Top Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/colorError"
+        android:background="@drawable/gradient"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:gravity="center_vertical">
+        android:paddingStart="10dp">
 
         <ImageView
             android:id="@+id/backButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/back_btn"
-            android:contentDescription="Back"
-            android:padding="8dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:clickable="true"
+            android:contentDescription="Back"
             android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/back_btn"
             app:tint="@color/white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/poppins"
             android:text="My Cart"
-            android:textSize="20sp"
             android:textColor="@color/white"
-            android:layout_marginStart="10dp"
+            android:textSize="18sp"
             android:textStyle="normal" />
     </LinearLayout>
 
@@ -41,8 +44,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="4dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="4dp">
 
         <!-- RecyclerView for cart items -->
         <androidx.recyclerview.widget.RecyclerView
@@ -62,46 +65,46 @@
         <!-- Centered empty cart image -->
         <ImageView
             android:id="@+id/emptyCartImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_gravity="center"
             android:src="@drawable/empty_bag"
             android:visibility="gone" />
     </FrameLayout>
 
+
     <TextView
         android:id="@+id/tvTotalPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="0dp"
+        android:fontFamily="@font/poppins"
+        android:paddingLeft="7dp"
         android:text="Total: ₹0"
         android:textAlignment="textStart"
-        android:textSize="18sp"
-        android:paddingLeft="7dp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCheckout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_height="52dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/colorError"
+        android:fontFamily="@font/poppins"
         android:text="Checkout"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@color/black" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnContinueShopping"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Continue Shopping"
-        android:textSize="16sp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="6dp"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        app:backgroundTint="@color/gray" />
+        android:textSize="16sp"
+        app:cornerRadius="12dp"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </LinearLayout>

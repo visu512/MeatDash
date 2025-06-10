@@ -1,11 +1,34 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme -->
     <style name="Base.Theme.MEATDASH" parent="Theme.Material3.DayNight.NoActionBar">
-<!--        <item name="android:windowBackground">@drawable/splash_background</item>-->
-        <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/colorError</item>
-        <item name="colorSecondary">@color/colorError</item>
+        <!-- Brand colors -->
+        <item name="colorPrimary">#EEA787</item>
+        <item name="colorPrimarySurface">#EEA787</item>
+
+        <!-- Disable Android Q+ force-dark globally -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
+        <!-- White backgrounds everywhere -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:colorBackground">@android:color/white</item>
+
+        <!-- Global CardView / RecyclerView overrides -->
+        <item name="materialCardViewStyle">@style/WhiteCardView</item>
+
+        <!-- Optional: window animations -->
+        <item name="android:windowAnimationStyle">@style/WindowSlideUpDown</item>
     </style>
 
+    <!-- Actual app theme -->
     <style name="Theme.MEATDASH" parent="Base.Theme.MEATDASH" />
+
+    <!-- Always-white MaterialCardView -->
+    <style name="WhiteCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+
 </resources>

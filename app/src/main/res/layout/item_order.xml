@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="1dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="4dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:forceDarkAllowed="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:stateListAnimator="@null"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <!-- 1) Order ID -->
+            <TextView
+                android:id="@+id/textOrderId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order ID: ORD-XXXXXXXX"
+                android:textStyle="bold" />
+
+            <!-- 2) Shop Name & Date -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textShopName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="My Meat Shop" />
+
+                <TextView
+                    android:id="@+id/textOrderDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:gravity="end"
+                    android:text="Jun 6, 14:32" />
+            </LinearLayout>
+
+            <!-- 3) Total + Payment Status + Toggle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textOrderTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total: ₹599.00" />
+
+                <TextView
+                    android:id="@+id/textPaymentStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="Paid"
+                    android:textColor="@color/gray_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textToggleDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/poppins"
+                    android:text="More…"
+                    android:textColor="@color/colorError"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <!-- 4) Expandable Details Container -->
+            <LinearLayout
+                android:id="@+id/containerDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- 4.1) Order Items List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewOrderItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+                <!-- 4.2) Delivery Timer -->
+                <TextView
+                    android:id="@+id/textDeliveryTimer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Delivering in 30 mins"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/green"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:paddingTop="8dp">
+
+                    <EditText
+                        android:id="@+id/inputStartPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Start point"
+                        android:gravity="center_vertical|start"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPostalAddress" />
+
+                    <EditText
+                        android:id="@+id/inputEndPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="End point"
+                        android:gravity="center_vertical|start"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPostalAddress" />
+
+                    <Button
+                        android:id="@+id/buttonCalcRoute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Go" />
+                </LinearLayout>
+
+
+                <!-- 4.4) Results: Distance, ETA, Fuel Cost -->
+                <LinearLayout
+                    android:id="@+id/LocationContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/textDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Distance: -- km"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textEta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ETA: -- min"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textFuelCost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fuel cost: -- ₹"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_margin="4dp"
+        android:background="@color/gray_light" />
+</LinearLayout>

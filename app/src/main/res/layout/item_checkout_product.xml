@@ -1,52 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:background="@drawable/border_design"
-    android:orientation="horizontal"
-    android:padding="8dp">
-
-    <ImageView
-        android:id="@+id/ivItemImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder" />
+    android:layout_margin="2dp"
+    app:cardCornerRadius="8dp"
+    android:id="@+id/cardView"
+    android:forceDarkAllowed="false"
+    app:cardElevation="0dp">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvItemName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Item Name"
-            android:textColor="#000"
-            android:textSize="16sp" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:strokeColor="#E0E0E0"
+            android:forceDarkAllowed="false"
+            app:strokeWidth="0.5dp">
 
-        <TextView
-            android:id="@+id/tvItemWeight"
-            android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/itemImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Weight"
-            android:textColor="#666"
-            android:textSize="14sp" />
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/itemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Product Name"
+                android:fontFamily="@font/poppins"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/itemPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="₹199"
+                android:fontFamily="@font/poppins"
+                android:textColor="#666"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/ItemWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="500 g"
+                android:fontFamily="@font/poppins"
+                android:textColor="#666"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvItemPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="₹0.00"
-        android:textColor="#000"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-</LinearLayout>
+</androidx.cardview.widget.CardView>

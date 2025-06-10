@@ -16,11 +16,23 @@
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#000000</color>
 
+    <color name="orderActive">#27AE60</color>
+
+    <color name="green">#1C944E</color>
+
+
+
+
     <!-- Error colors -->
-<!--    <color name="colorError">#B00020</color>-->
-    <color name="colorError">#2E3F9B</color>
+    <!--    <color name="colorError">#B00020</color>-->
+    <color name="colorError">#EEA787</color>
+
+    <!--    <color name="colorError">#FE5200</color>-->
 
     <color name="colorOnError">#FFFFFF</color>
+
+    <color name="snackbar_background">#323232</color>
+    <color name="colorAccent">#FF4081</color>
 
     <!-- Custom colors -->
     <color name="white">#FFFFFF</color>
@@ -29,11 +41,24 @@
     <color name="light_gray">#D3D3D3</color>
     <color name="dark_gray">#A9A9A9</color>
     <color name="red">#FF0000</color>
-    <color name="green">#00FF00</color>
+    <!--    <color name="green">#27AE60</color>-->
     <color name="blue">#0000FF</color>
     <color name="yellow">#FFFF00</color>
     <color name="orange">#FFA500</color>
     <color name="purple">#800080</color>
     <color name="cyan">#00FFFF</color>
     <color name="teal">#008080</color>
+
+    <color name="primaryColor">#FF5722</color>
+    <color name="gray_dark">#757575</color>
+
+    <color name="grays">#808080</color>
+    <color name="gray_light">#E0E0E0</color>
+    <color name="colorErrors">#FF0000</color>
+    <!--    <color name="Colors">#6200EE</color>-->
+
+    <color name="startColor">#F7A687</color>
+    <!--        <color name="centerColor">#E8C6BA</color>-->
+
+
 </resources>

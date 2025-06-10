@@ -1,264 +1,164 @@
-//package com.meat.meatdash.model
-//
-//import android.util.Log
-//import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.firestore.FirebaseFirestore
-//import com.google.firebase.firestore.SetOptions
-//
-//object CartManager {
-//    private val db = FirebaseFirestore.getInstance()
-//    private val auth = FirebaseAuth.getInstance()
-//    private val cartItems = mutableListOf<FoodItem>()
-//
-//    fun addItem(item: FoodItem, onComplete: (Boolean) -> Unit = {}) {
-//        val userId = auth.currentUser?.uid ?: run {
-//            onComplete(false)
-//            return
-//        }
-//
-//        // Check if item already exists in cart
-//        val existingItem = cartItems.find { it.id == item.id }
-//        if (existingItem != null) {
-//            // Update quantity if item exists
-//            existingItem.weight += item.weight
-//            updateFirestoreCart(userId, onComplete)
-//        } else {
-//            // Add new item with default weight (250g)
-//            cartItems.add(item.copy(weight = 250))
-//            updateFirestoreCart(userId, onComplete)
-//        }
-//    }
-//
-//    fun removeItem(item: FoodItem, onComplete: (Boolean) -> Unit = {}) {
-//        val userId = auth.currentUser?.uid ?: run {
-//            onComplete(false)
-//            return
-//        }
-//
-//        cartItems.removeAll { it.id == item.id }
-//        updateFirestoreCart(userId, onComplete)
-//    }
-//
-//    fun updateItemWeight(item: FoodItem, newWeight: Int, onComplete: (Boolean) -> Unit = {}) {
-//        val userId = auth.currentUser?.uid ?: run {
-//            onComplete(false)
-//            return
-//        }
-//
-//        cartItems.find { it.id == item.id }?.weight = newWeight
-//        updateFirestoreCart(userId, onComplete)
-//    }
-//
-//    fun clearCart(onComplete: (Boolean) -> Unit = {}) {
-//        val userId = auth.currentUser?.uid ?: run {
-//            onComplete(false)
-//            return
-//        }
-//
-//        cartItems.clear()
-//        db.collection("Carts").document(userId)
-//            .delete()
-//            .addOnSuccessListener { onComplete(true) }
-//            .addOnFailureListener { onComplete(false) }
-//    }
-//
-//    fun getCartItems(): List<FoodItem> = cartItems.toList()
-//
-//    fun getCartTotal(): Double {
-//        return cartItems.sumOf { it.price * (it.weight / 1000.0) }
-//    }
-//
-//    fun loadCartItems(onComplete: (Boolean) -> Unit) {
-//        val userId = auth.currentUser?.uid ?: run {
-//            onComplete(false)
-//            return
-//        }
-//
-//        db.collection("Carts").document(userId)
-//            .get()
-//            .addOnSuccessListener { document ->
-//                if (document.exists()) {
-//                    cartItems.clear()
-//                    val items = document.get("items") as? List<Map<String, Any>> ?: emptyList()
-//                    items.forEach { itemMap ->
-//                        cartItems.add(
-//                            FoodItem(
-//                                id = itemMap["id"] as? String ?: "",
-//                                name = itemMap["name"] as? String ?: "",
-//                                price = (itemMap["price"] as? Number)?.toInt() ?: 0,
-//                                description = itemMap["description"] as? String ?: "",
-//                                imageBase64 = itemMap["imageBase64"] as? String ?: "",
-//                                shopId = itemMap["shopId"] as? String ?: "",
-//                                shopName = itemMap["shopName"] as? String ?: "",
-//                                weight = (itemMap["weight"] as? Number)?.toInt() ?: 250
-//                            )
-//                        )
-//                    }
-//                    onComplete(true)
-//                } else {
-//                    onComplete(true) // No cart exists yet, which is fine
-//                }
-//            }
-//            .addOnFailureListener {
-//                onComplete(false)
-//            }
-//    }
-//
-//    private fun updateFirestoreCart(userId: String, onComplete: (Boolean) -> Unit) {
-//        val cartData = hashMapOf(
-//            "items" to cartItems.map { item ->
-//                hashMapOf(
-//                    "id" to item.id,
-//                    "name" to item.name,
-//                    "price" to item.price,
-//                    "description" to item.description,
-//                    "imageBase64" to item.imageBase64,
-//                    "shopId" to item.shopId,
-//                    "shopName" to item.shopName,
-//                    "weight" to item.weight,
-//                    "timestamp" to System.currentTimeMillis()
-//                )
-//            }
-//        )
-//
-//        db.collection("Carts").document(userId)
-//            .set(cartData, SetOptions.merge())
-//            .addOnSuccessListener { onComplete(true) }
-//            .addOnFailureListener { e ->
-//                Log.e("CartManager", "Error updating cart", e)
-//                onComplete(false)
-//            }
-//    }
-//}
+package com.meat.meatdash
 
-
-
-package com.meat.meatdash.model
-
-import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.TextView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.meat.meatdash.activity.CartActivity
+import com.meat.meatdash.model.FoodItem
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 object CartManager {
-    private val db = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
+    private var currentShopId: String? = null
+    private var currentShopName: String? = null
     private val cartItems = mutableListOf<FoodItem>()
+    private var cartUpdateListener: ((Int) -> Unit)? = null
+    private lateinit var sharedPref: SharedPreferences
+    private val gson = Gson()
+    private const val PREF_CART_KEY = "cart_items"
+    private const val PREF_SHOP_ID = "current_shop_id"
+    private const val PREF_SHOP_NAME = "current_shop_name"
 
-    fun addItem(item: FoodItem, onComplete: (Boolean) -> Unit = {}) {
-        val userId = auth.currentUser?.uid ?: run {
-            onComplete(false)
-            return
+    fun init(context: Context) {
+        sharedPref = context.getSharedPreferences("cart_prefs", Context.MODE_PRIVATE)
+        loadCartFromPrefs()
+    }
+
+    fun setCartUpdateListener(listener: (Int) -> Unit) {
+        cartUpdateListener = listener
+    }
+
+    private fun saveCartToPrefs() {
+        val editor = sharedPref.edit()
+        editor.putString(PREF_CART_KEY, gson.toJson(cartItems))
+        editor.putString(PREF_SHOP_ID, currentShopId)
+        editor.putString(PREF_SHOP_NAME, currentShopName)
+        editor.apply()
+    }
+
+    private fun loadCartFromPrefs() {
+        val json = sharedPref.getString(PREF_CART_KEY, null)
+        if (!json.isNullOrEmpty()) {
+            val type = object : TypeToken<MutableList<FoodItem>>() {}.type
+            val savedList: MutableList<FoodItem> = gson.fromJson(json, type)
+            cartItems.clear()
+            cartItems.addAll(savedList)
+
+            currentShopId = sharedPref.getString(PREF_SHOP_ID, null)
+            currentShopName = sharedPref.getString(PREF_SHOP_NAME, null)
         }
+        cartUpdateListener?.invoke(cartItems.size)
+    }
 
-        val existingItem = cartItems.find { it.id == item.id }
-        if (existingItem != null) {
-            existingItem.weight += item.weight
+    fun canAddItem(newItem: FoodItem): Boolean {
+        return currentShopId == null || currentShopId == newItem.shopId
+    }
+
+    fun addItem(item: FoodItem, callback: (Boolean) -> Unit = {}) {
+        val existingIndex = cartItems.indexOfFirst { it.id == item.id }
+        if (existingIndex != -1) {
+            cartItems[existingIndex] = item
         } else {
-            cartItems.add(item.copy(weight = 250))
+            cartItems.add(item)
         }
-
-        updateFirestoreCart(userId, onComplete)
+        if (currentShopId == null) {
+            currentShopId = item.shopId
+            currentShopName = item.shopName
+        }
+        saveCartToPrefs()
+        cartUpdateListener?.invoke(cartItems.size)
+        callback(true)
     }
 
-    fun removeItem(item: FoodItem, onComplete: (Boolean) -> Unit = {}) {
-        val userId = auth.currentUser?.uid ?: run {
-            onComplete(false)
-            return
+    fun addItemWithFeedback(item: FoodItem, context: Context, callback: (Boolean) -> Unit = {}) {
+        if (canAddItem(item)) {
+            addItem(item) { success -> callback(success) }
+        } else {
+            showShopMismatchDialog(context, item) {
+                clearCart {
+                    addItem(item) { success -> callback(success) }
+                }
+            }
         }
+    }
 
+    fun removeItem(item: FoodItem, callback: (Boolean) -> Unit = {}) {
         cartItems.removeAll { it.id == item.id }
-        updateFirestoreCart(userId, onComplete)
+        if (cartItems.isEmpty()) {
+            currentShopId = null
+            currentShopName = null
+        }
+        saveCartToPrefs()
+        cartUpdateListener?.invoke(cartItems.size)
+        callback(true)
     }
 
-    fun updateItemWeight(item: FoodItem, newWeight: Int, onComplete: (Boolean) -> Unit = {}) {
-        val userId = auth.currentUser?.uid ?: run {
-            onComplete(false)
-            return
+    fun updateItemWeight(item: FoodItem, newWeight: Int, callback: () -> Unit) {
+        val index = cartItems.indexOfFirst { it.id == item.id }
+        if (index != -1) {
+            cartItems[index].weight = newWeight
+            saveCartToPrefs()
         }
-
-        cartItems.find { it.id == item.id }?.weight = newWeight
-        updateFirestoreCart(userId, onComplete)
+        callback()
     }
 
-    fun clearCart(onComplete: (Boolean) -> Unit = {}) {
-        val userId = auth.currentUser?.uid ?: run {
-            onComplete(false)
-            return
-        }
-
+    fun clearCart(callback: (() -> Unit)? = null) {
         cartItems.clear()
-        db.collection("Carts").document(userId)
-            .delete()
-            .addOnSuccessListener { onComplete(true) }
-            .addOnFailureListener { onComplete(false) }
+        currentShopId = null
+        currentShopName = null
+        saveCartToPrefs()
+        cartUpdateListener?.invoke(0)
+        callback?.invoke()
     }
 
     fun getCartItems(): List<FoodItem> = cartItems.toList()
+    fun getCurrentShopId(): String? = currentShopId
+    fun getCurrentShopName(): String? = currentShopName
+    fun getCartItemCount(): Int = cartItems.size
 
-    fun getCartTotal(): Double {
-        return cartItems.sumOf { it.price * (it.weight / 1000.0) }
+    fun loadCartItems(callback: (Boolean) -> Unit) {
+        // We already load on init and saved in prefs, just return success
+        callback(true)
     }
 
-    fun loadCartItems(onComplete: (Boolean) -> Unit) {
-        val userId = auth.currentUser?.uid ?: run {
-            onComplete(false)
-            return
+    fun showShopMismatchDialog(context: Context, newItem: FoodItem, onConfirm: () -> Unit) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle("Replace cart item?")
+            .setMessage(
+                "Your cart contains item from ${newItem.shopName}." + " Do you want to discard the selection and add the item from $currentShopName."
+            )
+            .setPositiveButton("REPLACE") { dialog, _ ->
+                dialog.dismiss()
+                onConfirm()
+            }
+            .setNegativeButton("NO") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    fun showCartBottomSheet(context: Context) {
+        val dialog = BottomSheetDialog(context)
+        val view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_cart_summary, null)
+
+        val itemCount = getCartItemCount()
+        view.findViewById<TextView>(R.id.tvItemCount).text =
+            context.resources.getQuantityString(R.plurals.items_in_cart, itemCount, itemCount)
+
+        view.findViewById<Button>(R.id.btnViewCart).setOnClickListener {
+            context.startActivity(Intent(context, CartActivity::class.java))
+            dialog.dismiss()
         }
 
-        db.collection("Carts").document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    cartItems.clear()
-                    val items = document.get("items") as? List<Map<String, Any>> ?: emptyList()
-                    items.forEach { itemMap ->
-                        cartItems.add(
-                            FoodItem(
-                                id = itemMap["id"] as? String ?: "",
-                                name = itemMap["name"] as? String ?: "",
-                                price = (itemMap["price"] as? Number)?.toInt() ?: 0,
-                                description = itemMap["description"] as? String ?: "",
-                                imageBase64 = itemMap["imageBase64"] as? String ?: "",
-                                shopId = itemMap["shopId"] as? String ?: "",
-                                shopName = itemMap["shopName"] as? String ?: "",
-                                weight = (itemMap["weight"] as? Number)?.toInt() ?: 250
-                            )
-                        )
-                    }
-                    onComplete(true)
-                } else {
-                    onComplete(true)
-                }
-            }
-            .addOnFailureListener {
-                onComplete(false)
-            }
-    }
-
-    private fun updateFirestoreCart(userId: String, onComplete: (Boolean) -> Unit) {
-        val cartData = hashMapOf(
-            "items" to cartItems.map { item ->
-                hashMapOf(
-                    "id" to item.id,
-                    "name" to item.name,
-                    "price" to item.price,
-                    "description" to item.description,
-                    "imageBase64" to item.imageBase64,
-                    "shopId" to item.shopId,
-                    "shopName" to item.shopName,
-                    "weight" to item.weight,
-                    "timestamp" to System.currentTimeMillis()
-                )
-            }
-        )
-
-        db.collection("Carts").document(userId)
-            .set(cartData, SetOptions.merge())
-            .addOnSuccessListener { onComplete(true) }
-            .addOnFailureListener { e ->
-                Log.e("CartManager", "Error updating cart", e)
-                onComplete(false)
-            }
+        dialog.setContentView(view)
+        dialog.show()
     }
 }
+
+
+

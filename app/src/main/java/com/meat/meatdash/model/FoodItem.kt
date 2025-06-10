@@ -1,24 +1,3 @@
-//package com.meat.meatdash.model
-//
-//import android.content.Intent
-//import android.view.View
-//import android.widget.Toast
-//import com.meat.meatdash.activity.CartActivity
-//import com.meat.meatdash.adapter.PopularFoodAdapter
-//
-//data class FoodItem(
-//    val id: String = "",
-//    val name: String = "",
-//    val description: String = "",
-//    val price: Int = 0,
-//    val shopName: String="",
-//    val imageBase64: String = "",
-//    var weight: Int = 250, // in grams by default
-//    val shopId: String = "", // reference to shop
-//    val timestamp: com.google.firebase.Timestamp? = null
-//)
-
-
 package com.meat.meatdash.model
 
 import android.graphics.Bitmap
@@ -33,7 +12,7 @@ data class FoodItem(
     val price: Int = 0,
     val shopName: String = "",
     val imageBase64: String = "",
-    var weight: Int = 250, // in grams
+    var weight: Int = 100, // in grams minimum
     val shopId: String = "",
     val timestamp: Timestamp? = null
 ) {

@@ -1,95 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
     tools:context=".activity.ShopDetailActivity">
 
-    <!-- Fixed Top Bar -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/colorError"
-        android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/back_btn"
-            android:contentDescription="Back"
-            android:padding="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:tint="@color/white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shop Details"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="10dp"
-            android:textStyle="normal" />
-    </LinearLayout>
-
-    <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Shop Image -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp">
+                android:layout_height="240dp">
 
+                <!-- Full-width shop image -->
                 <ImageView
                     android:id="@+id/shopImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/placeholder" />
+
+                <!-- Back button with rounded white background -->
+                <ImageButton
+                    android:id="@+id/backButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_circle_white"
+                    android:padding="8dp"
+                    android:contentDescription="Back"
+                    android:src="@drawable/back_btn" />
             </RelativeLayout>
 
-            <!-- Shop Info Card -->
+
+            <!-- Shop info card -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="-32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
+                android:forceDarkAllowed="false"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="8dp">
+                app:cardElevation="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="12dp">
 
-                    <!-- Shop Name -->
                     <TextView
                         android:id="@+id/shopName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
                         android:text="Shop Name"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
-                    <!-- Rating and Reviews -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -113,6 +97,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
+                                android:fontFamily="@font/poppins"
                                 android:text="4.5"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
@@ -122,7 +107,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="(0 reviews)"
+                                android:fontFamily="@font/poppins"
+                                android:text="(120 reviews)"
                                 android:textColor="@color/gray"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -132,7 +118,6 @@
                             android:layout_height="1dp" />
                     </LinearLayout>
 
-                    <!-- Location -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -140,85 +125,59 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:src="@drawable/baseline_location"
-                            app:tint="@color/black" />
+                            app:tint="#9E9E9E" />
 
                         <TextView
                             android:id="@+id/shopLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="4dp"
                             android:text="123 Main Street, Jamshedpur, Jharkhand"
                             android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            android:fontFamily="@font/poppins"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
-                    <!-- Description -->
                     <TextView
                         android:id="@+id/shopDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="6dp"
                         android:lineSpacingExtra="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
                         android:text="About the shop description goes here..."
                         android:textColor="@color/gray"
-                        android:textSize="14sp" />
+                        android:fontFamily="@font/poppins"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Action Buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/directionButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="Reviews"
-                    android:textAllCaps="false"
-                    app:iconTint="@color/black"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="1dp" />
-            </LinearLayout>
-
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="16dp"
-                android:background="@color/light_gray" />
-
-            <!-- Popular Items Header -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
+                android:fontFamily="@font/poppins"
                 android:text="Popular Items"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <FrameLayout
                 android:id="@+id/shopContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
-                android:layout_marginHorizontal="16dp">
+                android:layout_marginBottom="70dp">
 
-                <!-- RecyclerView for popular items -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/popularItemsRecyclerView"
                     android:layout_width="match_parent"
@@ -226,25 +185,37 @@
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_popular_food" />
 
-                <!-- Loading Spinner -->
                 <ProgressBar
                     android:id="@+id/progressBar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
                     android:visibility="gone" />
 
-                <!-- Empty State -->
                 <TextView
                     android:id="@+id/emptyTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="No products available"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
                     android:layout_gravity="center"
+                    android:text="No products available"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
                     android:visibility="gone" />
             </FrameLayout>
+
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+
+    <!-- Bottom bar fixed at bottom overlaying content -->
+    <include
+        android:id="@+id/bottomBar"
+        layout="@layout/bottom_sheet_cart_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

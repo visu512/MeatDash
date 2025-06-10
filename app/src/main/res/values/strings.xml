@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">MeatDash</string>
-    <string name="forgot_password"><u>Forgot password</u></string>
-    <string name="already_have_an_account_login"><u>Already have an account Login</u></string>
-    <string name="don_t_have_an_account_sign_up"><u>Don\'t have an account Sign Up</u></string>
+    <string name="app_name">Meat Me Up</string>
+    <string name="forgot_password"><u>Forgot password!</u></string>
+    <string name="already_have_an_account_login">Already have an account? Login</string>
+    <string name="don_t_have_an_account_sign_up"><u>Don\'t have an account? Sign Up</u></string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="google_maps_key">Direction api google</string>
 
 
     <string name="lorem_ipsum">
@@ -46,4 +47,52 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+
+    <string name="price_format">₹%.2f (₹%d/kg)</string>
+    <string name="delivery_address">Delivery Address<font color='#FF0000'>*</font></string>
+    <string name="privacy_policy"><u>privacy policy</u></string>
+    <string name="copyright_text">© 2025 MeatDash. All rights reserved</string>
+    <string name="back_to_login"><u>Back to Login</u></string>
+    <!--    <string name="default_web_client_id">AIzaSyA5i22jW9GMH5uYtMmJn9Vdkrka8YY4dHA</string>-->
+
+    <string name="default_web_client_id" translatable="false">478974467703-diqt78e6rbcuguk81c7hhbeajcsfs01g.apps.googleusercontent.com</string>
+
+    <!--    <string name="privacy_policy">Privacy policy</string>-->
+
+    <plurals name="items_in_cart">
+        <item quantity="one">%d item added in Cart</item>
+        <item quantity="other">%d items added in Cart</item>
+    </plurals>
+
+
+    <string name="delivery_information">Delivery Information</string>
+    <string name="full_name">Full Name</string>
+    <string name="address_title">Address Title (e.g., Home, Work)</string>
+    <string name="street_address">Street Address</string>
+    <string name="house_apartment">House/Apartment No</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="zip_code">ZIP Code</string>
+    <string name="set_as_default_address">Set as default address</string>
+    <string name="save_profile">SAVE PROFILE</string>
+
+    <!-- Error messages -->
+    <string name="error_full_name">Please enter full name</string>
+    <string name="error_address_title">Please enter address title</string>
+    <string name="error_street_address">Please enter street address</string>
+    <string name="error_city">Please enter city</string>
+    <string name="error_state">Please enter state</string>
+    <string name="error_zip_code">Please enter zip code</string>
+    <string name="error_not_authenticated">User not authenticated</string>
+    <string name="error_saving_address">Error saving address: %1$s</string>
+    <string name="success_address_saved">Address saved successfully</string>
+
+    <string name="no_location_found">Unable to determine current location</string>
+    <string name="location_error">Error fetching location</string>
+    <string name="location_permission_required">Location permission required</string>
+    <string name="current_location_format">Current Location:\nLat: %.4f, Long: %.4f</string>
+
+    <string name="error_custom_tag">Please enter a custom address type</string>
+
 </resources>

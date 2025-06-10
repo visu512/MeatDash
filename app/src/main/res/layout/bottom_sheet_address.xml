@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="0dp">
+
+    <!-- Header with close button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="1dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins"
+            android:text="Select Delivery Address"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_close" />
+    </LinearLayout>
+
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="2dp"
+        android:background="@color/gray_light" />
+
+    <!-- Saved Addresses Header -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="1dp"
+        android:fontFamily="@font/poppins"
+        android:text="SAVED ADDRESSES"
+        android:textAllCaps="true"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+    <!-- Saved Addresses List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSavedAddresses"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:layout_marginTop="4dp"
+        android:clipToPadding="false"
+        android:maxHeight="550dp"
+        android:paddingBottom="1dp"
+        tools:listitem="@layout/address_item" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCurrentAddress"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:fontFamily="@font/poppins"
+            android:text="Current Address"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/baseline_gps"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/blue"
+            app:strokeColor="@color/black"
+            app:strokeWidth="0.7dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddNewAddress"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:backgroundTint="@color/colorError"
+            android:fontFamily="@font/poppins"
+            android:text="Add New Address"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
