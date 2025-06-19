@@ -15,5 +15,9 @@ data class Address(
     val title: String = "",
     var savedAt: Long = 0,
     var createdAt: Long = 0,
+    val latitude: Double=0.0,
+    val longitude: Double=0.0,
     val isDefault: Boolean = false
-) : Serializable
+) : Serializable {
+
+}

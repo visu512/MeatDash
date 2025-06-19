@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="16dp"
-    android:background="@color/white">
+    tools:context=".activity.CartActivity">
 
     <!-- Title -->
     <TextView
@@ -15,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/poppins"
-        android:text="Enter Your Phone Number"
+        android:text="What's Your Phone Number ?"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,56 +29,91 @@
         android:id="@+id/tvSubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/nunito"
         android:text="We'll use this to contact you about your order"
         android:textColor="@color/gray_dark"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <!-- Phone Input -->
+    <!-- Phone Input with Country Code Picker -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPhoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:hint="Phone Number"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPhoneNumber"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins"
-            android:inputType="number"
-            android:maxLength="10"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:background="@drawable/border_design"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Country Code Picker (only India) -->
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/ccp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                app:ccp_customMasterCountries="IN"
+                app:ccp_showFlag="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="true" />
+
+            <!-- Vertical Divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
+                android:background="@color/gray_light" />
+
+            <!-- Phone Number input -->
+            <EditText
+                android:id="@+id/etPhoneNumber"
+                android:imeOptions="actionDone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:digits="0123456789"
+                android:fontFamily="@font/poppins"
+                android:hint="Phone number"
+                android:imeActionLabel="Done"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Continue Button -->
+    <!-- Continue Button pinned to bottom -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnContinue"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:layout_marginTop="388dp"
-        android:layout_marginBottom="18dp"
         android:backgroundTint="@color/colorError"
         android:fontFamily="@font/poppins"
         android:text="Continue"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilPhoneNumber" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

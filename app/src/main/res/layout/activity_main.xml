@@ -64,11 +64,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="6dp"
-                                    android:text="Gamhariya"
                                     android:fontFamily="@font/nunito"
+                                    android:maxLines="1"
+                                    android:text="Gamhariya"
                                     android:textColor="@color/white"
                                     android:textSize="17sp"
-                                    android:maxLines="1"
                                     android:textStyle="bold" />
 
                                 <ImageView
@@ -86,9 +86,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
+                                android:fontFamily="@font/nunito"
                                 android:lineSpacingExtra="1dp"
                                 android:maxLines="1"
-                                android:fontFamily="@font/nunito"
                                 android:text="Your address details"
                                 android:textColor="@color/white"
                                 android:textSize="12sp" />
@@ -141,6 +141,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/card" />
 
+
                     <!-- Shop list container -->
                     <FrameLayout
                         android:id="@+id/shopContainer"
@@ -178,9 +179,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/poppins"
                             android:text="No shops available"
                             android:textColor="@color/dark_gray"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:visibility="gone" />
                     </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -198,13 +201,19 @@
             android:visibility="gone" />
 
         <!-- Floating Action Button -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/fabNewOrder"
-            android:layout_width="58dp"
-            android:layout_height="58dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="60dp"
+            android:layout_width="130dp"
+            android:layout_height="55dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="50dp"
+            android:drawableRight="@drawable/shoping_cart"
+            android:drawableTint="@color/white"
+            android:fontFamily="@font/poppins"
             android:src="@drawable/shoping_cart"
+            android:text="Track Order"
+            android:textSize="13sp"
             android:visibility="gone"
             app:backgroundTint="@color/colorError"
             app:layout_anchor="@id/shopRecyclerView"
@@ -212,12 +221,13 @@
             app:tint="@android:color/white" />
 
 
-        <!--        <include-->
-        <!--            layout="@layout/nav_bar"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="55dp"-->
-        <!--            android:layout_gravity="bottom" />-->
-
+        <include
+            android:id="@+id/bottomBarInclude"
+            layout="@layout/nav_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:visibility="gone"
+            android:layout_gravity="bottom" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

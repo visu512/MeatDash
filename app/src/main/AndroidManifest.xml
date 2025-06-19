@@ -7,62 +7,86 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/app_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/app_icon"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.MEATDASH"
         tools:targetApi="31">
-        <activity
-            android:name=".Retrofit.DistanceActivity"
-            android:exported="true">
 
-        </activity>
+        <!--     route api-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
 
         <activity
             android:name=".orders.OrderActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.Animated" />
         <activity
             android:name=".profile.ProfileActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".currentloc.CurrentLocationActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.PhoneActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".success.OrderSuccessActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".address.AddressActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".user.ForgotActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.Animated" />
         <activity
             android:name=".checkout.CheckoutActivity"
-            android:exported="true" />
+            android:debuggable="false"
+            android:exported="false"
+            android:theme="@style/AppTheme.Animated"
+            tools:ignore="HardcodedDebugMode"
+            tools:replace="android:debuggable" />
+
+        <!-- 1) Razorpay Checkout screen -->
+        <activity
+            android:name="com.razorpay.CheckoutActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MEATDASH.RazorpayCheckout"
+            tools:replace="android:theme" />
+
         <activity
             android:name=".activity.CartActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.ShopDetailActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".user.SplashActivity"
             android:exported="true"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,18 +94,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
             android:name=".user.SignupActivity"
             android:exported="false"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".user.LoginActivity"
             android:exported="true"
+            android:theme="@style/AppTheme.Animated"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan" >
+            android:theme="@style/AppTheme.Animated"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
 

@@ -8,7 +8,13 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="google_maps_key">Direction api google</string>
+
+    // direction api key
+<!--    <string name="google_maps_key">AIzaSyBIBvV9NW0I025KhcunXz-9-bwQtuKhbes</string>-->
+
+    // routing API key
+    <string name="google_maps_key">AIzaSyAjSkkstE4u1JZDUbSiPEVyCGr2u5l7638</string>
+<!--    <string name="google_maps_key">AIzaSyDfhbQ36aolvkjn0tjCw44b0mDMV6yhutg</string>-->
 
 
     <string name="lorem_ipsum">
@@ -54,7 +60,6 @@
     <string name="privacy_policy"><u>privacy policy</u></string>
     <string name="copyright_text">© 2025 MeatDash. All rights reserved</string>
     <string name="back_to_login"><u>Back to Login</u></string>
-    <!--    <string name="default_web_client_id">AIzaSyA5i22jW9GMH5uYtMmJn9Vdkrka8YY4dHA</string>-->
 
     <string name="default_web_client_id" translatable="false">478974467703-diqt78e6rbcuguk81c7hhbeajcsfs01g.apps.googleusercontent.com</string>
 
@@ -94,5 +99,14 @@
     <string name="current_location_format">Current Location:\nLat: %.4f, Long: %.4f</string>
 
     <string name="error_custom_tag">Please enter a custom address type</string>
+
+
+    <string name="delivery_estimate">Your order will be delivered in %d mins</string>
+    <string name="order_id_format">Order ID: %s</string>
+
+    <string name="shop_location_format">Shop Location: %1$s</string>
+    <string name="razorpay_key" />
+    <string name="routes_api_key" />
+
 
 </resources>

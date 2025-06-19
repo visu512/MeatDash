@@ -1,3 +1,4 @@
+// CartAdapter.kt
 package com.meat.meatdash.adapter
 
 import android.graphics.BitmapFactory
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.meat.meatdash.CartManager
 import com.meat.meatdash.R
@@ -19,14 +21,16 @@ class CartAdapter(
     private val onItemRemoved: () -> Unit
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
-    inner class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val itemImage: ImageView       = itemView.findViewById(R.id.cartItemImage)
-        val itemName: TextView         = itemView.findViewById(R.id.cartItemName)
-        val itemPrice: TextView        = itemView.findViewById(R.id.cartItemPrice)
-        val itemWeight: EditText       = itemView.findViewById(R.id.cartItemWeight)
-        val weightUnitSpinner: Spinner = itemView.findViewById(R.id.weightUnitSpinner)
-        val btnRemove: ImageButton     = itemView.findViewById(R.id.btnRemove)
-        var currentTextWatcher: TextWatcher? = null
+    // track positions where weight < 100g
+    private var invalidPositions: Set<Int> = emptySet()
+
+    init {
+        // ensure each item view is tied to its item’s stable ID
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return cartItems[position].id.hashCode().toLong()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -41,15 +45,9 @@ class CartAdapter(
         val item = cartItems[position]
         val pricePerKg = item.price
 
-        // 1) Enforce stored minimum weight of 100g
-        if (item.weight < 100) {
-            item.weight = 100
-            CartManager.updateItemWeight(item, 100) {}
-        }
-
-        // 2) Load image (or placeholder)
+        // --- load image or placeholder ---
         holder.itemImage.setImageResource(R.drawable.placeholder)
-        item.imageBase64?.let {
+        item.imageBase64?.takeIf { it.isNotEmpty() }?.let {
             try {
                 val bytes = Base64.decode(it, Base64.DEFAULT)
                 val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
@@ -59,13 +57,13 @@ class CartAdapter(
             }
         }
 
-        // 3) Name
+        // name ---
         holder.itemName.text = item.name
 
-        // 4) Weight display & unit spinner
+        //  weight input & unit spinner ---
         val isKg = item.weight >= 1000
-        val displayVal = if (isKg) (item.weight / 1000).toString() else item.weight.toString()
-        holder.itemWeight.setText(displayVal)
+        val displayVal = if (isKg) (item.weight / 1000) else item.weight
+        holder.itemWeight.setText(displayVal.toString())
 
         ArrayAdapter.createFromResource(
             holder.itemView.context,
@@ -77,10 +75,8 @@ class CartAdapter(
         }
         holder.weightUnitSpinner.setSelection(if (isKg) 1 else 0, false)
 
-        // 5) Watcher for user edits
-        holder.currentTextWatcher?.let {
-            holder.itemWeight.removeTextChangedListener(it)
-        }
+        // --- TextWatcher: detach old, attach new ---
+        holder.currentTextWatcher?.let { holder.itemWeight.removeTextChangedListener(it) }
         val watcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) =
                 updateWeightAndPrice(holder, item, pricePerKg)
@@ -90,7 +86,7 @@ class CartAdapter(
         holder.itemWeight.addTextChangedListener(watcher)
         holder.currentTextWatcher = watcher
 
-        // 6) Unit‐change listener
+        // --- unit change listener ---
         holder.weightUnitSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -101,67 +97,91 @@ class CartAdapter(
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
 
-        // 7) Remove button
+        // --- remove button: delegate to CartManager only ---
         holder.btnRemove.setOnClickListener {
             val pos = holder.adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
-                CartManager.removeItem(cartItems[pos]) { success ->
+                val toDelete = cartItems[pos]
+                CartManager.removeItem(toDelete) { success ->
                     if (success) {
-                        cartItems.removeAt(pos)
-                        notifyItemRemoved(pos)
-                        notifyItemRangeChanged(pos, cartItems.size)
+                        // Activity’s listener (setCartUpdateListener) will call adapter.updateItems(...)
                         onItemRemoved()
                         onQuantityChanged()
+                    } else {
+                        Toast.makeText(
+                            holder.itemView.context,
+                            "Failed to delete item. Please try again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
         }
 
-        // 8) Price update
+        // --- initial price render ---
         updatePrice(holder, pricePerKg)
+
+        // --- show or clear error if weight < 100g ---
+        if (invalidPositions.contains(position)) {
+            holder.itemWeight.error = "Minimum weight 100 g"
+        } else {
+            holder.itemWeight.error = null
+        }
     }
 
+    inner class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val itemImage: ImageView      = itemView.findViewById(R.id.cartItemImage)
+        val itemName: TextView        = itemView.findViewById(R.id.cartItemName)
+        val itemPrice: TextView       = itemView.findViewById(R.id.cartItemPrice)
+        val itemWeight: EditText      = itemView.findViewById(R.id.cartItemWeight)
+        val weightUnitSpinner: Spinner= itemView.findViewById(R.id.weightUnitSpinner)
+        val btnRemove: ImageButton    = itemView.findViewById(R.id.btnRemove)
+        var currentTextWatcher: TextWatcher? = null
+    }
+
+    // Update model’s weight, recalc UI price & totals, then async-persist change. */
     private fun updateWeightAndPrice(
         holder: CartViewHolder,
         item: FoodItem,
         pricePerKg: Int
     ) {
-        val raw = holder.itemWeight.text.toString()
-        val num = raw.toDoubleOrNull() ?: 0.0
+        val raw  = holder.itemWeight.text.toString()
+        val num  = raw.toDoubleOrNull() ?: 0.0
         val unit = holder.weightUnitSpinner.selectedItem.toString()
         val grams = if (unit == "kg") (num * 1000).toInt() else num.toInt()
 
-        // Enforce minimum 100g
-        if (grams < 100) {
-//            Toast.makeText(
-//                holder.itemView.context,
-//                "Minimum order is 100 g",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//            holder.itemWeight.setText("100")
-            holder.itemWeight.setSelection(holder.itemWeight.text.length)
-            return
-        }
+        // 1) persist to CartManager (prefs + internal list)
+        CartManager.updateItemWeight(item, grams) { /* no-op */ }
 
-        item.weight = grams
-        CartManager.updateItemWeight(item, grams) {
-            updatePrice(holder, pricePerKg)
-            onQuantityChanged()
-        }
+        // 2) refresh UI & notify total callback
+        updatePrice(holder, pricePerKg)
+        onQuantityChanged()
     }
 
+    // Compute and bind the price text */
     private fun updatePrice(holder: CartViewHolder, pricePerKg: Int) {
-        val raw = holder.itemWeight.text.toString()
-        val num = raw.toDoubleOrNull() ?: 0.0
+        val raw  = holder.itemWeight.text.toString()
+        val num  = raw.toDoubleOrNull() ?: 0.0
         val unit = holder.weightUnitSpinner.selectedItem.toString()
-        val kg = if (unit == "kg") num else num / 1000.0
+        val kg   = if (unit == "kg") num else num / 1000.0
         val total = pricePerKg * kg
         holder.itemPrice.text =
             holder.itemView.context.getString(R.string.price_format, total, pricePerKg)
     }
 
-    fun updateItems(newItems: List<FoodItem>) {
-        cartItems = newItems.toMutableList()
+    // Highlight any positions where weight < 100g */
+    fun setInvalidWeights(invalid: Set<Int>) {
+        invalidPositions = invalid
         notifyDataSetChanged()
     }
+
+    // Replace adapter data from CartManager */
+    fun updateItems(newItems: List<FoodItem>) {
+        cartItems = newItems.toMutableList()
+        invalidPositions = emptySet()
+        notifyDataSetChanged()
+    }
+
+    // Expose current list */
+    fun getItems(): List<FoodItem> = cartItems.toList()
 }

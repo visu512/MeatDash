@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    android:orientation="vertical"
-    android:padding="0dp"
+    android:background="#FFF"
     tools:context=".activity.CartActivity">
 
-    <!-- Fixed Top Bar -->
+    <!-- Top Bar -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
         android:layout_height="55dp"
+        android:orientation="horizontal"
         android:background="@drawable/gradient"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="10dp">
+        android:paddingStart="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/backButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:clickable="true"
-            android:contentDescription="Back"
-            android:focusable="true"
             android:padding="8dp"
             android:src="@drawable/back_btn"
+            android:clickable="true"
+            android:focusable="true"
             app:tint="@color/white" />
 
         <TextView
@@ -36,25 +37,27 @@
             android:fontFamily="@font/poppins"
             android:text="My Cart"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="normal" />
+            android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- FrameLayout to stack RecyclerView and Empty ImageView -->
+    <!-- Content Frame: list, progress, empty state -->
     <FrameLayout
-        android:layout_width="match_parent"
+        android:id="@+id/contentFrame"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="4dp">
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- RecyclerView for cart items -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cartRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="4dp"
+            android:clipToPadding="false"
             tools:listitem="@layout/item_cart" />
 
-        <!-- Centered ProgressBar -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
@@ -62,7 +65,6 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <!-- Centered empty cart image -->
         <ImageView
             android:id="@+id/emptyCartImage"
             android:layout_width="65dp"
@@ -70,41 +72,47 @@
             android:layout_gravity="center"
             android:src="@drawable/empty_bag"
             android:visibility="gone" />
+
     </FrameLayout>
 
-
-    <TextView
-        android:id="@+id/tvTotalPrice"
-        android:layout_width="match_parent"
+    <!-- Bottom Bar: Total + Checkout -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="0dp"
-        android:fontFamily="@font/poppins"
-        android:paddingLeft="7dp"
-        android:text="Total: ₹0"
-        android:textAlignment="textStart"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCheckout"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_margin="8dp"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="@color/colorError"
-        android:fontFamily="@font/poppins"
-        android:text="Checkout"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:cornerRadius="12dp"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:iconTint="@color/white"
+        android:orientation="vertical"
+        android:padding="0dp"
+        android:background="#FFF"
+        android:elevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Total: ₹0"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:paddingLeft="8dp"
+            android:textStyle="bold" />
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins"
+            android:text="Checkout"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="12dp"
+            app:backgroundTint="@color/colorError" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

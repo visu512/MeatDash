@@ -1,3 +1,5 @@
+
+// CartActivity.kt
 package com.meat.meatdash.activity
 
 import android.content.Intent
@@ -20,72 +22,90 @@ class CartActivity : AppCompatActivity() {
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 1) Init CartManager
         CartManager.init(this)
-        loadCartItems()
-    }
 
-    private fun loadCartItems() {
-        binding.progressBar.visibility = View.VISIBLE
-        CartManager.loadCartItems {
-            binding.progressBar.visibility = View.GONE
-            if (it) {
-                setupRecyclerView()
-                updateTotalPrice()
-                setupButtonListeners()
-                checkEmptyCart()
-            }
+        // 2) Setup RecyclerView & adapter
+        setupRecyclerView()
+
+        // 3) Hook up Back & Checkout buttons
+        setupButtonListeners()
+
+        // 4) Listen for ANY cart change (add/remove/update/clear)
+        CartManager.setCartUpdateListener { _ ->
+            adapter.updateItems(CartManager.getCartItems())
+            updateTotalPrice()
+            checkEmptyCart()
         }
+
+        // 5) Kick off initial load
+        loadCartItems()
     }
 
     private fun setupRecyclerView() {
         adapter = CartAdapter(
             CartManager.getCartItems().toMutableList(),
             onQuantityChanged = { updateTotalPrice() },
-            onItemRemoved = {
+            onItemRemoved     = {
                 updateTotalPrice()
                 checkEmptyCart()
             }
         )
+
         binding.cartRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@CartActivity)
-            adapter = this@CartActivity.adapter
+            adapter       = this@CartActivity.adapter
             setHasFixedSize(true)
         }
-    }
-
-    private fun updateTotalPrice() {
-        val total = CartManager.getCartItems().sumOf { item ->
-            val weightInKg = if (item.weight >= 1000) item.weight / 1000.0 else item.weight / 1000.0
-            item.price * weightInKg
-        }
-        binding.tvTotalPrice.text = "Total: ₹%.2f".format(total)
-    }
-
-    private fun checkEmptyCart() {
-        val isCartEmpty = CartManager.getCartItems().isEmpty()
-        binding.cartRecyclerView.visibility = if (isCartEmpty) View.GONE else View.VISIBLE
-        binding.emptyCartImage.visibility = if (isCartEmpty) View.VISIBLE else View.GONE
-        binding.tvTotalPrice.visibility = if (isCartEmpty) View.GONE else View.VISIBLE
-        binding.btnCheckout.visibility = if (isCartEmpty) View.GONE else View.VISIBLE
     }
 
     private fun setupButtonListeners() {
         binding.backButton.setOnClickListener { onBackPressed() }
 
-        // add details
         binding.btnCheckout.setOnClickListener {
-            if (CartManager.getCartItems().isNotEmpty()) {
-                startActivity(Intent(this, CheckoutActivity::class.java))
+            val items = CartManager.getCartItems()
+            // find all positions where weight < 100 g
+            val invalid = items
+                .mapIndexedNotNull { idx, item -> idx.takeIf { item.weight < 100 } }
+                .toSet()
+
+            if (invalid.isNotEmpty()) {
+                // flag errors & scroll to first
+                adapter.setInvalidWeights(invalid)
+                binding.cartRecyclerView.scrollToPosition(invalid.minOrNull()!!)
+                return@setOnClickListener
+            }
+
+            // clear any stale errors and proceed
+            adapter.setInvalidWeights(emptySet())
+            startActivity(Intent(this, CheckoutActivity::class.java))
+        }
+    }
+
+    private fun loadCartItems() {
+        binding.progressBar.visibility = View.VISIBLE
+        CartManager.loadCartItems { success ->
+            binding.progressBar.visibility = View.GONE
+            if (success) {
+                adapter.updateItems(CartManager.getCartItems())
+                updateTotalPrice()
+                checkEmptyCart()
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        loadCartItems()
+    private fun updateTotalPrice() {
+        val total = CartManager.getCartItems()
+            .sumOf { it.price * (it.weight / 1000.0) }
+        binding.tvTotalPrice.text = "Total: ₹%.2f".format(total)
+    }
+
+    private fun checkEmptyCart() {
+        val empty = CartManager.getCartItems().isEmpty()
+        binding.cartRecyclerView.visibility  = if (empty) View.GONE else View.VISIBLE
+        binding.emptyCartImage.visibility    = if (empty) View.VISIBLE else View.GONE
+        binding.tvTotalPrice.visibility      = if (empty) View.GONE else View.VISIBLE
+        binding.btnCheckout.visibility       = if (empty) View.GONE else View.VISIBLE
     }
 }
-
-
-
 

@@ -11,10 +11,13 @@ data class FoodItem(
     val description: String = "",
     val price: Int = 0,
     val shopName: String = "",
+    val shopLocation: String ="",
     val imageBase64: String = "",
-    var weight: Int = 100, // in grams minimum
+    var weight: Int = 0, // in grams minimum by default
     val shopId: String = "",
-    val timestamp: Timestamp? = null
+    val timestamp: Timestamp? = null,
+    val shopLat: Double = 0.0,
+    val shopLng: Double = 0.0,
 ) {
     fun getBitmap(): Bitmap? {
         return try {

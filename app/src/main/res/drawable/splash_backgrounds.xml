@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- bg color -->
+    <item android:drawable="@color/splashBackgroundColor" />
+
+    <!-- around 1000dp inset -->
+    <item>
+        <inset android:inset="1000dp">
+<!--            <bitmap-->
+<!--                android:gravity="center"-->
+<!--                android:src="@drawable/splash_image" />-->
+        </inset>
+    </item>
+
+</layer-list>

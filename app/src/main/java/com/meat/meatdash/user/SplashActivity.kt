@@ -1,11 +1,16 @@
 package com.meat.meatdash.user
 
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.identity.intents.AddressConstants.Themes
 import com.google.firebase.auth.FirebaseAuth
 import com.meat.meatdash.R
 import com.meat.meatdash.activity.MainActivity
@@ -14,17 +19,23 @@ import com.meat.meatdash.sharedpref.PrefsHelper
 
 class SplashActivity : AppCompatActivity() {
 
-    // 0.5 seconds (1000 milliseconds)
+    // 2 seconds
     private val splashDelayMillis = 2000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        setTheme(R.style.SplashTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Hide navigation and status bars for a full-screen splash
+//        // Hide navigation and status bars
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+
+        // Tint status bar on Lollipop+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = Color.parseColor("#FEF3ED")
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
             routeAfterSplash()
@@ -32,26 +43,18 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun routeAfterSplash() {
-        val auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
-        // 1) If no Firebase user is logged in, go to LoginActivity
-        if (currentUser == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
+        val target = when {
+            currentUser == null -> LoginActivity::class.java
+            PrefsHelper.getString(this, "phoneNumber").orEmpty().isNotEmpty() ->
+                MainActivity::class.java
+
+            else -> PhoneActivity::class.java
         }
 
-        // 2) Otherwise, check SharedPreferences for a saved phone number
-        val savedPhone = PrefsHelper.getString(this, "phoneNumber") ?: ""
-
-        if (savedPhone.isNotEmpty()) {
-            // → phone number was already saved; go to MainActivity
-            startActivity(Intent(this, MainActivity::class.java))
-        } else {
-            // → no phone number found; go to PhoneActivity
-            startActivity(Intent(this, PhoneActivity::class.java))
-        }
+        startActivity(Intent(this, target))
         finish()
     }
 }
+

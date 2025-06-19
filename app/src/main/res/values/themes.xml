@@ -14,14 +14,17 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:colorBackground">@android:color/white</item>
 
+
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <!-- Tell the system to draw dark icons on the nav bar -->
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+
+
         <!-- Global CardView / RecyclerView overrides -->
         <item name="materialCardViewStyle">@style/WhiteCardView</item>
-
-        <!-- Optional: window animations -->
-        <item name="android:windowAnimationStyle">@style/WindowSlideUpDown</item>
     </style>
 
-    <!-- Actual app theme -->
+    <!-- App theme (core) -->
     <style name="Theme.MEATDASH" parent="Base.Theme.MEATDASH" />
 
     <!-- Always-white MaterialCardView -->
@@ -30,5 +33,23 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
+    <!-- Razorpay checkout override: transparent status bar to follow WebView meta-tag -->
+    <style name="Theme.MEATDASH.RazorpayCheckout" parent="Theme.MEATDASH">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#EEA787</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+
+
+    <!-- Splash screen theme -->
+    <style name="SplashTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_backgrounds</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:statusBarColor">@color/splashBackgroundColor</item>
+    </style>
 
 </resources>
+

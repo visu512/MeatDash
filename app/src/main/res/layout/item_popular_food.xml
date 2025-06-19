@@ -82,8 +82,8 @@
                 android:maxLines="2"
                 android:fontFamily="@font/poppins"
                 android:text="Farm fresh and juicy chicken, antibiotic-free and naturally fed"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/gray"
+                android:textSize="11sp" />
 
             <!-- Rating and preparation time -->
             <LinearLayout
@@ -138,11 +138,12 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="-20dp"
-            android:elevation="10dp"
+            android:elevation="5dp"
             android:gravity="center_vertical|center_horizontal"
             android:paddingTop="2dp"
             android:background="@drawable/button_outline_white"
             android:text="ADD"
+            android:fontFamily="@font/poppins"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/colorError"

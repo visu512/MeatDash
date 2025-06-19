@@ -12,8 +12,15 @@
         android:title="Orders" />
 
     <item
+        android:id="@+id/navigation_cart"
+        android:icon="@drawable/pers1"
+        android:title="Profile" />
+
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/pers1"
         android:title="Profile" />
+
+
 
 </menu>

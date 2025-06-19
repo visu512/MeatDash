@@ -20,14 +20,13 @@
 
     <color name="green">#1C944E</color>
 
+    <color name="splashBackground">#FEF3ED</color>
 
+    <color name="splashBackgroundColor">#FEF3ED</color>
 
-
-    <!-- Error colors -->
-    <!--    <color name="colorError">#B00020</color>-->
+    <!-- app color  -->
     <color name="colorError">#EEA787</color>
 
-    <!--    <color name="colorError">#FE5200</color>-->
 
     <color name="colorOnError">#FFFFFF</color>
 
@@ -41,7 +40,6 @@
     <color name="light_gray">#D3D3D3</color>
     <color name="dark_gray">#A9A9A9</color>
     <color name="red">#FF0000</color>
-    <!--    <color name="green">#27AE60</color>-->
     <color name="blue">#0000FF</color>
     <color name="yellow">#FFFF00</color>
     <color name="orange">#FFA500</color>
@@ -55,10 +53,8 @@
     <color name="grays">#808080</color>
     <color name="gray_light">#E0E0E0</color>
     <color name="colorErrors">#FF0000</color>
-    <!--    <color name="Colors">#6200EE</color>-->
 
     <color name="startColor">#F7A687</color>
-    <!--        <color name="centerColor">#E8C6BA</color>-->
 
 
 </resources>

@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -80,13 +81,28 @@ class MainActivity : AppCompatActivity() {
     private lateinit var userEmail: TextView
     private var fabHideRunnable: Runnable? = null
 
+
     private val SHARED_PREFS_NAME = "MeatDashPrefs"
     private val SELECTED_ADDRESS_KEY = "selected_address"
+    private val KEY_FINISH_PREFIX = "FINISH_TIME_"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+//        val nav = findViewById<BottomNavigationView>(R.id.)
+//        nav.setOnNavigationItemSelectedListener { item ->
+//            when(item.itemId) {
+//                R.id.navigation_home -> { /* already here */ true }
+//                R.id.navigation_orders -> { startActivity(Intent(this, OrderActivity::class.java)); true }
+//                R.id.navigation_profile -> { startActivity(Intent(this, ProfileActivity::class.java)); true }
+//                else -> false
+//            }
+//        }
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         CartManager.init(applicationContext)
@@ -120,49 +136,36 @@ class MainActivity : AppCompatActivity() {
         updateFabVisibility()
     }
 
+
+    // order tracking button
     private fun updateFabVisibility() {
-        val userId = auth.currentUser?.uid ?: return
+        val prefs = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+        val now = System.currentTimeMillis()
 
-        db.collection("OrderList")
-            .whereEqualTo("userId", userId)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val now = System.currentTimeMillis()
-
-                // Calculate remaining time for all non-delivered orders
-                val remainingList = snapshot.documents.mapNotNull { doc ->
-                    val status = doc.getString("status") ?: return@mapNotNull null
-                    if (status.equals("Delivered", true) || status.equals("Cancelled", true)) {
-                        return@mapNotNull null
-                    }
-                    val ts = doc.getLong("timestamp") ?: return@mapNotNull null
-                    val left = 2 * 60 * 1000L - (now - ts)
-                    if (left > 0) left else null
-                }
-
-                // Cancel any previously posted hide callback
-                fabHideRunnable?.let { binding.fabNewOrder.removeCallbacks(it) }
-
-                if (remainingList.isNotEmpty()) {
-                    // Show the FAB
-                    binding.fabNewOrder.visibility = View.VISIBLE
-
-                    // ③ Schedule hide when the soonest window expires
-                    val minLeft = remainingList.minOrNull() ?: 0L
-                    fabHideRunnable = Runnable {
-                        binding.fabNewOrder.visibility = View.GONE
-                    }
-                    binding.fabNewOrder.postDelayed(fabHideRunnable, minLeft)
-                } else {
-                    // No active orders → hide immediately
-                    binding.fabNewOrder.visibility = View.GONE
+        val remaining = prefs.all
+            .filterKeys { it.startsWith(KEY_FINISH_PREFIX) }
+            .mapNotNull { (_, value) ->
+                (value as? Long)?.let { finishTs ->
+                    val diff = finishTs - now
+                    if (diff > 0) diff else null
                 }
             }
-            .addOnFailureListener {
-                // On error, hide
+
+        fabHideRunnable?.let { binding.fabNewOrder.removeCallbacks(it) }
+
+        if (remaining.isNotEmpty()) {
+            binding.fabNewOrder.visibility = View.VISIBLE
+
+            val minLeft = remaining.minOrNull()!!
+            fabHideRunnable = Runnable {
                 binding.fabNewOrder.visibility = View.GONE
             }
+            binding.fabNewOrder.postDelayed(fabHideRunnable, minLeft)
+        } else {
+            binding.fabNewOrder.visibility = View.GONE
+        }
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -172,10 +175,10 @@ class MainActivity : AppCompatActivity() {
     private fun setupUI() {
         // Image slider
         val imageList = listOf(
-            SlideModel(R.drawable.banner1, ScaleTypes.FIT),
-            SlideModel(R.drawable.banner2, ScaleTypes.FIT),
-            SlideModel(R.drawable.banner3, ScaleTypes.FIT),
-            SlideModel(R.drawable.banner4, ScaleTypes.FIT),
+            SlideModel(R.drawable.slider1, ScaleTypes.FIT),
+            SlideModel(R.drawable.slider2, ScaleTypes.FIT),
+            SlideModel(R.drawable.slider3, ScaleTypes.FIT),
+            SlideModel(R.drawable.slider4, ScaleTypes.FIT),
             SlideModel(R.drawable.banner5, ScaleTypes.FIT)
         )
         binding.imageSlider.setImageList(imageList)
@@ -289,10 +292,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             val handled = when (menuItem.itemId) {
-                R.id.nav_logout -> {
-                    logoutUser()
-                    true
-                }
 
                 R.id.nav_info -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
@@ -354,12 +353,57 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.nav_logout -> {
+                    // Show confirmation dialog instead of logging out immediately
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            // User confirmed — proceed with logout
+                            performLogout()
+                        }
+                        .setNegativeButton("No", null)
+                        .show()
+                    true
+                }
+
+
                 else -> false
             }
             if (handled) binding.drawerLayout.closeDrawer(GravityCompat.START)
             handled
         }
     }
+
+    private fun performLogout() {
+        // 1) Remove saved address from SharedPreferences
+        val prefs = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit()
+            .remove(SELECTED_ADDRESS_KEY)
+            .apply()
+
+        // 2) Remove the “selectedAddress” field in Firestore (optional cleanup)
+        auth.currentUser?.uid?.let { uid ->
+            db.collection("userLocation")
+                .document(uid)
+                .update("selectedAddress", FieldValue.delete())
+        }
+
+        // 3) Sign out from FirebaseAuth
+        auth.signOut()
+
+        // 4) Clear the in-memory & persisted cart
+        CartManager.clearCart()
+
+        // 5) Launch LoginActivity and clear the back stack
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+
+        // 6) Finish MainActivity
+        finish()
+    }
+
 
     private fun setupAddressBar() {
         binding.openLocationBottomBar.setOnClickListener {
@@ -707,6 +751,7 @@ class MainActivity : AppCompatActivity() {
         binding.textAddressDetails.text = "Tap to set delivery location"
     }
 }
+
 
 
 

@@ -27,7 +27,6 @@
 
             <ImageView
                 android:id="@+id/cartItemImage"
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="Restaurant image"
@@ -50,9 +49,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:fontFamily="@font/poppins"
                 android:maxLines="1"
                 android:text="Item Name"
-                android:fontFamily="@font/poppins"
                 android:textColor="#212121"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -62,9 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins"
                 android:maxLines="1"
                 android:text="₹0.00"
-                android:fontFamily="@font/poppins"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -79,13 +78,16 @@
                     android:id="@+id/cartItemWeight"
                     android:layout_width="80dp"
                     android:layout_height="45dp"
+                    android:fontFamily="@font/poppins"
                     android:gravity="center"
                     android:inputType="numberDecimal"
                     android:text=""
-                    android:textStyle="bold"
-                    android:fontFamily="@font/poppins"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:imeActionLabel="Done"
+                    android:textColor="#212121"
                     android:textSize="14sp"
-                    android:textColor="#212121" />
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/weightUnitSpinner"
@@ -102,9 +104,9 @@
             android:id="@+id/btnRemove"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_marginTop="4dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="Remove"
-            android:layout_marginTop="4dp"
             android:src="@drawable/baseline_delete"
             app:tint="@color/colorError" />
     </LinearLayout>

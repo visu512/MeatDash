@@ -24,7 +24,7 @@
             android:id="@+id/backButton"
             android:layout_width="50dp"
             android:layout_height="45dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="108dp"
             android:padding="10sp"
@@ -163,191 +163,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/labelPhone" />
 
-        <!-- 6) Street Address Label + Field -->
-        <TextView
-            android:id="@+id/labelStreet"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:fontFamily="@font/poppins"
-            android:text="Street Address"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etPhone" />
-
-        <EditText
-            android:id="@+id/etStreet"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/dark_gray"
-            android:fontFamily="@font/poppins"
-            android:hint="Enter street address"
-            android:inputType="textPostalAddress"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelStreet" />
-
-        <!-- 7) House/Apartment Label + Field -->
-        <TextView
-            android:id="@+id/labelHouseApt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:fontFamily="@font/poppins"
-            android:text="House/Apartment"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etStreet" />
-
-        <EditText
-            android:id="@+id/etHouseApt"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/dark_gray"
-            android:fontFamily="@font/poppins"
-            android:hint="Enter house/apartment"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelHouseApt" />
-
-        <!-- 8) City Label + Field -->
-        <TextView
-            android:id="@+id/labelCity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:fontFamily="@font/poppins"
-            android:text="City"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etHouseApt" />
-
-        <EditText
-            android:id="@+id/etCity"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/dark_gray"
-            android:fontFamily="@font/poppins"
-            android:hint="Enter city"
-            android:inputType="textCapWords"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelCity" />
-
-        <!-- 9) State Label + Field -->
-        <TextView
-            android:id="@+id/labelState"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:fontFamily="@font/poppins"
-            android:text="State"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etCity" />
-
-        <EditText
-            android:id="@+id/etState"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/dark_gray"
-            android:fontFamily="@font/poppins"
-            android:hint="Enter state"
-            android:inputType="textCapWords"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelState" />
-
-        <!-- 10) ZIP Code Label + Field -->
-        <TextView
-            android:id="@+id/labelZip"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:text="ZIP Code"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etState" />
-
-        <EditText
-            android:id="@+id/etZip"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/dark_gray"
-            android:fontFamily="@font/poppins"
-            android:hint="Enter ZIP code"
-            android:inputType="number"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnSaveProfile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelZip" />
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSaveProfile"
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="47dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="208dp"
             android:backgroundTint="@color/colorError"
             android:fontFamily="@font/poppins"
             android:text="Update profile"
@@ -362,7 +186,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etZip" />
+            app:layout_constraintTop_toBottomOf="@+id/etPhone" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

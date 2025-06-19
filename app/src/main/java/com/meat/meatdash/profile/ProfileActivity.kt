@@ -64,11 +64,7 @@ class ProfileActivity : AppCompatActivity() {
                     binding.apply {
                         etFullName.setText(snap.getString("fullName").orEmpty())
                         etPhone   .setText(snap.getString("phoneNumber").orEmpty())
-                        etStreet  .setText(snap.getString("street").orEmpty())
-                        etHouseApt.setText(snap.getString("houseApartment").orEmpty())
-                        etCity    .setText(snap.getString("city").orEmpty())
-                        etState   .setText(snap.getString("state").orEmpty())
-                        etZip     .setText(snap.getString("zipCode").orEmpty())
+                      
                     }
                 } else {
                     binding.etFullName.setText(user.displayName.orEmpty())
@@ -97,11 +93,11 @@ class ProfileActivity : AppCompatActivity() {
             val data = hashMapOf(
                 "fullName" to fullName,
                 "phoneNumber" to phoneNumber,
-                "street" to etStreet.text.toString().trim(),
-                "houseApartment" to etHouseApt.text.toString().trim(),
-                "city" to etCity.text.toString().trim(),
-                "state" to etState.text.toString().trim(),
-                "zipCode" to etZip.text.toString().trim(),
+//                "street" to etStreet.text.toString().trim(),
+//                "houseApartment" to etHouseApt.text.toString().trim(),
+//                "city" to etCity.text.toString().trim(),
+//                "state" to etState.text.toString().trim(),
+//                "zipCode" to etZip.text.toString().trim(),
                 "updatedAt" to System.currentTimeMillis()
             )
 

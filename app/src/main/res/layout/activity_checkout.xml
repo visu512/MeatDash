@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fafafa"
+    android:fadeScrollbars="true"
     android:fillViewport="true"
     android:scrollbars="none"
-    android:fadeScrollbars="true"
     tools:context=".checkout.CheckoutActivity">
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:elevation="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingStart="16dp">
+            android:paddingStart="10dp">
 
             <ImageView
                 android:id="@+id/backButton"
@@ -61,8 +61,8 @@
                 android:id="@+id/tvDeliveryAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Deliver To"
                 android:fontFamily="@font/poppins"
+                android:text="Deliver To"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:visibility="gone" />
@@ -72,9 +72,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:forceDarkAllowed="false"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
-                android:forceDarkAllowed="false"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -87,8 +87,8 @@
                         android:id="@+id/textAddressTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Delivery title"
                         android:fontFamily="@font/poppins"
+                        android:text="Delivery title"
                         android:textColor="#000"
                         android:textSize="15sp" />
 
@@ -98,10 +98,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
+                        android:fontFamily="@font/poppins"
                         android:lineSpacingExtra="4dp"
                         android:maxLines="8"
                         android:text="address details"
-                        android:fontFamily="@font/poppins"
                         android:textColor="#666"
                         android:textSize="12sp" />
 
@@ -110,13 +110,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="6dp"
                         android:background="@android:color/transparent"
-                        android:text="Change Address"
                         android:fontFamily="@font/poppins"
+                        android:text="Change Address"
                         android:textAlignment="textEnd"
                         android:textColor="@color/colorError"
-                        android:textSize="12sp"
+                        android:textSize="12.5sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -142,8 +142,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Order Summary"
                 android:fontFamily="@font/poppins"
+                android:text="Order Summary"
                 android:textColor="#333"
                 android:textSize="17sp" />
 
@@ -158,8 +158,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Subtotal"
                     android:fontFamily="@font/poppins"
+                    android:text="Subtotal"
                     android:textColor="#666"
                     android:textSize="14sp" />
 
@@ -169,9 +169,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
                     android:gravity="end"
                     android:text="₹0.00"
-                    android:fontFamily="@font/poppins"
                     android:textColor="#333"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -187,8 +187,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Shipping"
                     android:fontFamily="@font/poppins"
+                    android:text="Shipping"
                     android:textColor="#666"
                     android:textSize="14sp" />
 
@@ -198,8 +198,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="end"
                     android:fontFamily="@font/poppins"
+                    android:gravity="end"
                     android:text="₹0.00"
                     android:textColor="#333"
                     android:textSize="14sp" />
@@ -216,8 +216,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="GST (5%)"
                     android:fontFamily="@font/poppins"
+                    android:text="GST (5%)"
                     android:textColor="#666"
                     android:textSize="14sp" />
 
@@ -227,12 +227,46 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
                     android:gravity="end"
                     android:text="₹0.00"
-                    android:fontFamily="@font/poppins"
                     android:textColor="#333"
                     android:textSize="14sp" />
             </LinearLayout>
+
+
+            <!--            // rainy price-->
+            <LinearLayout
+                android:id="@+id/rainRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="Rainy"
+                    android:textColor="#666"
+                    android:textSize="14sp" />
+
+                <!-- Renamed from tvTax -->
+                <TextView
+                    android:id="@+id/RainTextPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="end"
+                    android:text="₹0.00"
+                    android:textColor="#333"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
@@ -250,8 +284,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Total"
                     android:fontFamily="@font/poppins"
+                    android:text="To Pay"
                     android:textColor="#000"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -262,13 +296,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
                     android:gravity="end"
                     android:text="₹0.00"
-                    android:fontFamily="@font/poppins"
                     android:textColor="#000"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnPlaceOrder"
@@ -277,7 +312,7 @@
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/colorError"
                 android:fontFamily="@font/poppins"
-                android:text="Place Order"
+                android:text="Proceed to Pay"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
@@ -304,6 +339,88 @@
             app:iconGravity="textStart"
             app:iconPadding="8dp"
             app:iconTint="@color/white" />
+
+
+        <!-- Route Calculation Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="#CCFFFFFF"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/etStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Shop address" />
+
+            <EditText
+                android:id="@+id/etEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="user address" />
+
+            <EditText
+                android:id="@+id/etWeather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="User Weather address" />
+
+            <Button
+                android:id="@+id/btnCalc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/dark_gray"
+                android:text="Show Route"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvRouteInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Calculating route…"
+                android:textAlignment="textEnd"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Delivery Timer -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvRainWeather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="weather:"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/textDeliveryTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delivering in 0 mins"
+                android:textAlignment="textEnd"
+                android:textColor="@color/green"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+        </LinearLayout>
+
 
     </LinearLayout>
 </ScrollView>

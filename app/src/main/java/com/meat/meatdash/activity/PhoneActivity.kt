@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.meat.meatdash.R
+import com.hbb20.CountryCodePicker
+import com.meat.meatdash.activity.MainActivity
 import com.meat.meatdash.databinding.ActivityPhoneBinding
 import com.meat.meatdash.sharedpref.PrefsHelper
 
@@ -21,13 +22,17 @@ class PhoneActivity : AppCompatActivity() {
         binding = ActivityPhoneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-
-        // Initialize a ProgressDialog
         progressDialog = ProgressDialog(this).apply {
             setMessage("Saving phone number…")
             setCancelable(false)
+        }
+
+        // Lock CCP to India, purely decorative (no filters applied)
+        binding.ccp.apply {
+            setDefaultCountryUsingNameCode("IN")
+            setClickable(false)
+            setFocusable(false)
         }
 
         setupClickListeners()
@@ -35,41 +40,35 @@ class PhoneActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.btnContinue.setOnClickListener {
-            val phoneNumber = binding.etPhoneNumber.text.toString().trim()
-            if (validatePhoneNumber(phoneNumber)) {
-                savePhoneNumber(phoneNumber)
-            }
-        }
-    }
+            val raw = binding.etPhoneNumber.text.toString().trim()
 
-    private fun validatePhoneNumber(phoneNumber: String): Boolean {
-        return if (phoneNumber.length == 10 && phoneNumber.all { it.isDigit() }) {
+            // 1) Must be exactly 10 digits
+            if (raw.length != 10 || !raw.all { it.isDigit() }) {
+                binding.tilPhoneNumber.error = "Enter exactly 10 digits"
+                binding.etPhoneNumber.requestFocus()
+                return@setOnClickListener
+            }
+
+            // Clear error
             binding.tilPhoneNumber.error = null
-            true
-        } else {
-            binding.tilPhoneNumber.error = "Enter a valid 10-digit phone number"
-            false
+
+            // Prepend +91 and save
+            val fullNumber = "+91$raw"
+            savePhoneNumber(fullNumber)
         }
     }
 
     private fun savePhoneNumber(phoneNumber: String) {
-        val currentUser = auth.currentUser
-        if (currentUser == null) {
-            Toast.makeText(this, "Please sign in to save your phone number", Toast.LENGTH_SHORT)
-                .show()
+        auth.currentUser ?: run {
+            Toast.makeText(this, "Please sign in first", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Show loading dialog
         progressDialog.show()
-
-        // Simulate any asynchronous work here if needed. In this case, SharedPreferences is synchronous,
         PrefsHelper.saveString(this, "phoneNumber", phoneNumber)
-
-        // Hide loading dialog
         progressDialog.dismiss()
 
-        Toast.makeText(this, "Phone number saved!", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
